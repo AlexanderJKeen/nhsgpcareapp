@@ -11,16 +11,8 @@ import { useState } from "react"
 import {createUser} from "../../lib/actions/patient.actions"
 import {UserFormValidation} from "../../lib/validation"
 import { useRouter } from "next/navigation"
- 
-export enum FormFieldType {
-  INPUT = 'input',
-  TEXTAREA = 'textarea',
-  PHONE_INPUT = 'phoneInput',
-  CHECKBOX = 'checkbox',
-  DATE_PICKER = 'datePicker',
-  SELECT = 'select',
-  SKELETON = 'skeleton'
-};
+import { FormFieldType } from "./PatientForm"
+
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -28,9 +20,9 @@ const formSchema = z.object({
   }),
 })
  
-const PatientForm = () => {
-const [isLoading, setIsLoading] = useState(false);
-const router = useRouter();
+const RegisterForm = async () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
@@ -62,10 +54,15 @@ const router = useRouter();
     return(
 
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-                <section className="mb-12 space-y-4">
-                    <h1 className="header">Keep in touch</h1>
-                    <p className="text-dark-700"> Book your first appointment</p>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
+                <section className="space-y-4">
+                    <h1 className="header"> Welcome </h1>
+                    <p className="text-dark-700"> Let us know more </p>
+                </section>
+                <section className="space-y-6">
+                    <section className="mb-9 space-y-1">
+                        <h2>Personal Information</h2>
+                    </section>
                 </section>
                 <CustomFormField 
                   fieldType={FormFieldType.INPUT}
@@ -76,23 +73,6 @@ const router = useRouter();
                   iconSrc="/assets/icons/user.svg"
                   iconAlt="user"
                 />
-                <CustomFormField 
-                  fieldType={FormFieldType.INPUT}
-                  control={form.control}
-                  name="email"
-                  label="Email"
-                  placeholder="Email"
-                  iconSrc="/assets/icons/email.svg"
-                  iconAlt="email"
-                />
-                <CustomFormField 
-                  fieldType={FormFieldType.PHONE_INPUT}
-                  control={form.control}
-                  name="phone"
-                  label="Phone Number"
-                  iconSrc="/assets/icons/user.svg"
-                  iconAlt="Phone Number"
-                />
                 <SubmitButton isLoading={isLoading}> Get Started </SubmitButton>
             </form>
         </Form>
@@ -100,4 +80,4 @@ const router = useRouter();
     )
 }
 
-export default PatientForm;
+export default RegisterForm;
